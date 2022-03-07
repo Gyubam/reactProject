@@ -5,12 +5,16 @@ import {Navbar, Container, Nav, NavDropdown, Jumbotron, Button} from 'react-boot
 import { useState } from 'react';
 import Data from './data.js';
 import Detail from './Detail.js';
+import axios from 'axios';
 
 import { Link, Route, Switch} from 'react-router-dom';
 
 function App() {
 
     let [shoes, shoes변경] = useState(Data);
+    let [재고, 재고변경] = useState([10,11,12]);
+
+
 
     return (
         <div className="App">
@@ -56,16 +60,23 @@ function App() {
                                     <Compo 글제목={shoes[i].title} 글내용={shoes[i].content} index={i}></Compo>
                                 );
                             })
-
                         }
-
                     </div>
+                    <button className='btn btn-primary' onClick={()=>{
+
+                        axios.get('https://codingapple1.github.io/shop/data2.json')
+                        .then((result)=>{ // 성공 시
+                            shoes변경([...shoes, ...result.data]); // 대괄호 벗기고 다시 대괄호 -> 카피본 설정
+                        })
+                        .catch(()=>{}) // 실패 시
+
+                    }}>더보기</button>
                 </div>
             </Route>
 
 
             <Route path="/detail/:id">
-                <Detail shoes={shoes}></Detail>
+                <Detail shoes={shoes} 재고={재고} 재고변경={재고변경}></Detail>
             </Route>
 
             <Route path={"/:id"}> 
