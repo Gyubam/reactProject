@@ -2,12 +2,16 @@ import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Navbar, Container, Nav, NavDropdown, Jumbotron, Button} from 'react-bootstrap';
-import { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Data from './data.js';
 import Detail from './Detail.js';
 import axios from 'axios';
-
 import { Link, Route, Switch} from 'react-router-dom';
+
+// props 없이 값 공유하는 기능
+let 재고context = React.createContext();
+
+
 
 function App() {
 
@@ -52,6 +56,10 @@ function App() {
                     </p>
                 </Jumbotron>
                 <div className='container'>
+
+                    <재고context.Provider value={재고}>
+                
+
                     <div className='row'>
                         
                         {
@@ -62,6 +70,9 @@ function App() {
                             })
                         }
                     </div>
+
+                    </재고context.Provider>
+
                     <button className='btn btn-primary' onClick={()=>{
 
                         axios.get('https://codingapple1.github.io/shop/data2.json')
@@ -93,6 +104,9 @@ function App() {
 }
 
 function Compo(props){
+
+    let 재고 = useContext(재고context);
+
     return(
         <div className='col-md-4'>
                   <img src={"https://codingapple1.github.io/shop/shoes"+ (props.index+1) +".jpg"} width="100%" />

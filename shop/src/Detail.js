@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import './Detail.scss';
+import { Button, Navbar, Nav, Tab } from 'react-bootstrap'
+import {CSSTransition} from 'react-transition-group'
+
 
 let 박스 = styled.div`
     padding : 20px;
@@ -14,6 +17,10 @@ function Detail(props){
 
 
     let [alert, alert변경] = useState(true);
+
+    let [누른탭, 누른탭변경] = useState(0);
+
+    let [스위치, 스위치변경] = useState(false);
 
 // 컴포넌트가 mount 되었을때, 컴포넌트가 update될때 특정코드실행
     useEffect(()=>{
@@ -61,11 +68,47 @@ function Detail(props){
                         }}>뒤로가기</button>
                         </div>
                     </div>
+
+                    <Nav className='mt-5' variant="tabs" defaultActiveKey="/link-0">
+                        <Nav.Item>
+                            <Nav.Link eventKey="link-0" onClick={() =>{스위치변경(false); 누른탭변경(0)}}>Active</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link eventKey="link-1" onClick={() =>{스위치변경(false); 누른탭변경(1)}}>Option 2</Nav.Link>
+                        </Nav.Item>
+                    </Nav>
+    
                 </div>
+
+                {/* in = 애니메이션 켜는 스위치 , true면 동작, 클래스네임 임의 , 타임아웃 = 동작시간 */}
+                <CSSTransition in={스위치} classNames="wow" timeout={500}>
+                <TabContent 누른탭={누른탭} 스위치변경={스위치변경}></TabContent>
+                </CSSTransition>
             </div>
 
     );
 }
+
+function TabContent(props) {
+
+    useEffect( () => {
+        props.스위치변경(true);
+    });
+
+    if (props.누른탭 === 0) {
+        return <div>0번째 내용입니다</div>
+    }
+    else if (props.누른탭 === 1) {
+        return <div>1번째 내용입니다</div>
+    }
+    else if (props.누른탭 === 2) {
+        return <div>2번째 내용입니다</div>
+    }
+    
+    
+    
+}
+
 
 function Info(props) {
     return(
